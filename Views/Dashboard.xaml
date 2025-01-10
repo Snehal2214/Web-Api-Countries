@@ -1,0 +1,184 @@
+﻿<UserControl
+    x:Class="BaseApp.Views.Dashboard"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:Converters="clr-namespace:WpfHelpers.Resources.Converters;assembly=WpfHelpers"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:ei="clr-namespace:Microsoft.Expression.Interactivity.Core;assembly=Microsoft.Expression.Interactions"
+    xmlns:i="clr-namespace:System.Windows.Interactivity;assembly=System.Windows.Interactivity"
+    xmlns:local="clr-namespace:BaseApp.Views"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    d:DesignHeight="450"
+    d:DesignWidth="1000"
+    mc:Ignorable="d">
+    <UserControl.Resources>
+        <Converters:InvertValueVisibilityConverter x:Key="InvertValueVisibilityConverter" />
+        <Converters:InverseBooleanConverter x:Key="InverseBooleanConverter" />
+        <BooleanToVisibilityConverter x:Key="BooleanToVisibilityConverter" />
+        <BooleanToVisibilityConverter x:Key="BoolToVisibility" />
+        <Style x:Key="DisabledButtonStyle" TargetType="Button"  >
+            <Style.Triggers>
+                <DataTrigger Binding="{Binding IsEnabled, RelativeSource={RelativeSource Self}}" Value="False">
+                    <Setter Property="Background" Value="Gray" />
+                    <Setter Property="Foreground" Value="DarkGray" />
+
+                </DataTrigger>
+            </Style.Triggers>
+        </Style>
+    </UserControl.Resources>
+
+    <Grid Background="#ecf0f5">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="Auto" />
+            <!--<RowDefinition Height="Auto" />-->
+            <!--<RowDefinition Height="Auto" />-->
+            <RowDefinition Height="*" />
+        </Grid.RowDefinitions>
+        <Border
+            Grid.Row="0"
+            Height="50"
+            Background="#222d32">
+            <DockPanel HorizontalAlignment="Stretch" LastChildFill="False">
+                <Button
+                    Margin="10,0,0,0"
+                    DockPanel.Dock="Left"
+                    Style="{DynamicResource TransparentButton}">
+                    <Button.Content>
+                        <StackPanel
+                            HorizontalAlignment="Left"
+                            VerticalAlignment="Center"
+                            Orientation="Horizontal">
+                            <TextBlock
+                                Margin="5,0,5,0"
+                                HorizontalAlignment="Left"
+                                FontSize="14"
+                                Style="{DynamicResource FontAwesome}"
+                                Text="&#xf0e4;" />
+                        </StackPanel>
+                    </Button.Content>
+                </Button>
+                <TextBlock
+                    VerticalAlignment="Center"
+                    DockPanel.Dock="Left"
+                    FontSize="16"
+                    Foreground="#fff"
+                    Style="{DynamicResource Roboto}"
+                    Text=" Printing Module" />
+                <TextBlock
+                    VerticalAlignment="Center"
+                    DockPanel.Dock="Right"
+                    FontSize="16"
+                    Foreground="#fff"
+                    Style="{DynamicResource Roboto}"
+                    Text=" " />
+                <!--<TextBlock Text="{Binding CurrentUser,Mode=TwoWay,UpdateSourceTrigger=PropertyChanged}" Style="{ DynamicResource Roboto}" FontSize="16" Foreground="#fff"  DockPanel.Dock="Right" VerticalAlignment="Center"/>
+                    <TextBlock Text="Welcome : " Style="{ DynamicResource Roboto}" FontSize="16" Foreground="#fff"  DockPanel.Dock="Right" VerticalAlignment="Center"/>-->
+
+            </DockPanel>
+        </Border>
+        <Border
+            Grid.Row="1"
+            Padding="15,15,15,0"
+            VerticalAlignment="Stretch"
+            Background="#ecf0f5">
+            <Grid Background="White">
+                <Border
+                    HorizontalAlignment="Stretch"
+                    VerticalAlignment="Top"
+                    Background="#fff"
+                    BorderBrush="#222d32"
+                    BorderThickness="0,3,0,0">
+                    <StackPanel Orientation="Vertical">
+                        <Border
+                            Padding="10"
+                            BorderBrush="#f4f4f4"
+                            BorderThickness="0,0,0,1">
+                            <DockPanel LastChildFill="False">
+                                <TextBlock
+                                    VerticalAlignment="Center"
+                                    DockPanel.Dock="Left"
+                                    FontSize="18"
+                                    FontWeight="SemiBold"
+                                    LineHeight="1"
+                                    Text="Dashboard" />
+
+                            </DockPanel>
+                        </Border>
+                    </StackPanel>
+                </Border>
+            </Grid>
+        </Border>
+        <Border
+            Grid.Row="2"
+            Margin="15,0"
+            Padding="15,10"
+            VerticalAlignment="Stretch"
+            Background="#fff">
+            <StackPanel Orientation="Horizontal">
+
+                <TextBox Name="txtApi" Width="200" Height="28" Text="{Binding ApiUrl, UpdateSourceTrigger=PropertyChanged}"/>
+                <Button Content="Get Data" Command="{Binding GetDataCommand}" Margin="10,0,0,0" FontWeight="Bold" />
+
+                <Label Content="Select Template"  FontSize="12" FontWeight="Bold" />
+                <ComboBox Name="Templatetxt"
+                          ItemsSource="{Binding Templates}"
+                          SelectedItem="{Binding SelectedTemplate, Mode=TwoWay}">
+                </ComboBox>
+                <Button Command="{Binding StartCommand}"  Content="Start" Margin="35,0,10,0" Background="MediumSeaGreen" Foreground="White"
+                       IsEnabled="{Binding IsStartButtonEnabled}" Style="{StaticResource DisabledButtonStyle}" Width="50" FontWeight="Bold" />
+                <Button Command="{Binding StopCommand}" Content="Stop" Background="IndianRed" Foreground="White"
+                        IsEnabled="{Binding IsStopButtonEnabled}" Style="{StaticResource DisabledButtonStyle}"  Width="50" FontWeight="Bold" />
+
+                <TextBox Name="txtSearch"  Text="{Binding SearchQuery}" MinWidth="120" Margin="10,0,0,0"/>
+                <Button Command="{Binding SearchCommand}" Content="Search" FontWeight="Bold" />
+
+                <Button Command="{Binding ConnectCommand}" Content="Connect" Margin="15,0,0,0 " FontWeight="Bold"/>
+                <Button Command="{Binding SendCommand}" Content="Send" FontWeight="Bold"/>
+
+
+            </StackPanel>
+        </Border>
+
+        <Grid Grid.Row="3">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="*"/>
+                <ColumnDefinition Width="*"/>
+            </Grid.ColumnDefinitions>
+
+            <ListView ItemsSource="{Binding ApiData}" Margin="5">
+                <ListView.View>
+                    <GridView>
+                        <GridViewColumn Header="Country Name" DisplayMemberBinding="{Binding name.common}" />
+                        <GridViewColumn Header="Capital" DisplayMemberBinding="{Binding capital[0]}" />
+                        <!--<GridViewColumn Header="Currency" DisplayMemberBinding="{Binding currencies.name}" />
+                        <GridViewColumn Header="Language" DisplayMemberBinding="{Binding languages[0]}" />-->
+                        <GridViewColumn Header="Region" DisplayMemberBinding="{Binding region}" />
+                        <GridViewColumn Header="Subregion" DisplayMemberBinding="{Binding subregion}" />
+                        <GridViewColumn Header="Population" DisplayMemberBinding="{Binding population}" />
+
+                    </GridView>
+                </ListView.View>
+
+            </ListView>
+
+            <DataGrid Grid.Column="1"
+               Margin="5"
+               AutoGenerateColumns="False"
+               IsSynchronizedWithCurrentItem="True" ItemsSource="{Binding FilteredApiData}">
+                <DataGrid.Columns>
+                    <DataGridTextColumn Header="Country Name" Binding="{Binding name.common}"/>
+                    <DataGridTextColumn Header="Capital" Binding="{Binding capital[0]}"/>
+                    <!--<DataGridTextColumn Header="Currency" Binding="{Binding currencies[0]}"/>
+                    <DataGridTextColumn Header="Language" Binding="{Binding languages[0]}"/>-->
+                    <DataGridTextColumn Header="Region" Binding="{Binding region}"/>
+                    <DataGridTextColumn Header="SubRegion" Binding="{Binding subregion}"/>
+                    <DataGridTextColumn Header="Population" Binding="{Binding population}"/>
+                </DataGrid.Columns>
+                
+            </DataGrid>
+        </Grid>
+
+    </Grid>
+</UserControl>
